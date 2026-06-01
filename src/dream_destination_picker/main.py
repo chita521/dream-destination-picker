@@ -23,14 +23,25 @@ def main(page: ft.Page):
     page.scroll = "auto"
 
     page.bgcolor = "#EAF6FF"
+
     page.fonts = {
         "Antic": "/Users/akhilachitluri/Documents/GitHub/dream-destination-picker/src/dream_destination_picker/fonts/Antic-Regular.ttf",
-        "Playfair": "/Users/akhilachitluri/Documents/GitHub/dream-destination-picker/src/dream_destination_picker/fonts/PlayfairDisplay-VariableFont_wght.ttf"
+        "Playfair": "/Users/akhilachitluri/Documents/GitHub/dream-destination-picker/src/dream_destination_picker/fonts/PlayfairDisplay-VariableFont_wght.ttf",
     }
+
     page.theme = ft.Theme(font_family="Antic")
 
-    # INPUTS
+    # SNACKBAR
+    page.error_snack = ft.SnackBar(
+        content=ft.Text(
+            "⚠️ Please select all options first!",
+            color="white",
+        ),
+        bgcolor="red",
+    )
+    page.show_dialog(page.error_snack)
 
+    # DROPDOWNS (INPUTS)
     budget_dropdown = ft.Dropdown(
         label="Budget",
         width=250,
@@ -61,14 +72,14 @@ def main(page: ft.Page):
         ],
     )
 
-    # Outputs 
+    # OUTPUT ELEMENTS
     destination_text = ft.Text(size=24)
     activity_text = ft.Text(size=20)
     packing_text = ft.Text(size=18)
     previous_trip_text = ft.Text(size=18)
 
     destination_image = ft.Image(
-        src="None",
+        src=None,
         visible=False,
         width=500,
         height=300,
@@ -76,20 +87,32 @@ def main(page: ft.Page):
         border_radius=20,
     )
 
-    # Functions
+    # PAGE NAVIGATION FUNCTIONS
+    def show_home():
+        page.clean()
+        page.add(home)
+
+    def show_result():
+        page.clean()
+        page.add(results)
+
+    def show_saved():
+        page.clean()
+        page.add(saved)
+
+    # LOGIC FUNCTIONS
     def generate_destination(e):
         nonlocal trip_data
+
         if (
             not budget_dropdown.value
             or not weather_dropdown.value
-            or not activity_dropdown.value 
+            or not activity_dropdown.value
         ):
-            page.snack_bar = ft.SnackBar(
-                ft.Text("Please select all options first!")
-            )
-            page.snack_bar.open = True
-            page.update()
-            return 
+            if not page.error_snack.open:
+                page.show_dialog(page.error_snack)
+                #page.update()
+            return
 
         recommendation = get_recommendation(
             budget_dropdown.value,
@@ -97,17 +120,9 @@ def main(page: ft.Page):
             activity_dropdown.value,
         )
 
-        destination_text.value = (
-            f"Destination: {recommendation['destination']}"
-        )
-
-        activity_text.value = (
-            f"Activity: {recommendation['activity']}"
-        )
-
-        packing_text.value = (
-            f"Packing Reminder: {recommendation['packing']}"
-        )
+        destination_text.value = f"Destination: {recommendation['destination']}"
+        activity_text.value = f"Activity: {recommendation['activity']}"
+        packing_text.value = f"Packing Reminder: {recommendation['packing']}"
 
         destination_image.src = recommendation["image"]
         destination_image.visible = True
@@ -116,36 +131,33 @@ def main(page: ft.Page):
 
         page.update()
 
-    def save_trip(e):
+        show_result() 
 
+    def save_trip(e):
         nonlocal trip_data
 
         if trip_data:
-
             save_trip_data(trip_data)
 
             previous_trip_text.value = (
-                f"Last Saved Destination: "
-                f"{trip_data['destination']}"
+                f"Last Saved Destination: {trip_data['destination']}"
             )
 
             page.update()
 
-    # Load previous data
+            show_saved() 
+
+    # LOAD SAVED DATA
     previous_data = load_trip_data()
-    
+
     if previous_data:
         previous_trip_text.value = (
-            f"Last Saved Destination: "
-            f"{previous_data['destination']}"
+            f"Last Saved Destination: {previous_data['destination']}"
         )
-
     else:
-        previous_trip_text.value = (
-            "No saved trips yet."
-        )
+        previous_trip_text.value = "No saved trips yet."
 
-    # Pages
+    # BUILD PAGES
     home = home_page(
         page,
         budget_dropdown,
@@ -154,33 +166,47 @@ def main(page: ft.Page):
         generate_destination,
     )
 
-    results = result_page(
-        destination_text,
-        activity_text,
-        packing_text,
-        destination_image,
-        save_trip,
+    results = ft.Column(
+        [
+            result_page(
+                destination_text,
+                activity_text,
+                packing_text,
+                destination_image,
+                save_trip,
+            ),
+
+            ft.Row(
+                [
+                    ft.ElevatedButton(
+                        "Try Again",
+                        on_click=lambda e: show_home(),
+                    ),
+                    ft.ElevatedButton(
+                        "View Saved Trips",
+                        on_click=lambda e: show_saved(),
+                    ),
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+            ),
+        ],
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
     )
 
-    saved = saved_page(
-        previous_trip_text
+    saved = ft.Column(
+        [
+            saved_page(previous_trip_text),
+
+            ft.ElevatedButton(
+                "Plan Another Trip",
+                on_click=lambda e: show_home(),
+            ),
+        ],
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
     )
 
-    # Layout 
-    page.add(
-        ft.Column(
-            [
-                ft.Row(
-                    [home, results],
-                    alignment=ft.MainAxisAlignment.CENTER,
-                    wrap=True,
-                ),
+    # START APP ON HOME PAGE
+    show_home()
 
-                saved,
-            ],
-            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            spacing=30,
-        )
-    )
 
 ft.app(target=main)
