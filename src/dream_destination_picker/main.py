@@ -23,6 +23,11 @@ def main(page: ft.Page):
     page.scroll = "auto"
 
     page.bgcolor = "#EAF6FF"
+    page.fonts = {
+        "Antic": "/Users/akhilachitluri/Documents/GitHub/dream-destination-picker/src/dream_destination_picker/fonts/Antic-Regular.ttf",
+        "Playfair": "/Users/akhilachitluri/Documents/GitHub/dream-destination-picker/src/dream_destination_picker/fonts/PlayfairDisplay-VariableFont_wght.ttf"
+    }
+    page.theme = ft.Theme(font_family="Antic")
 
     # INPUTS
 

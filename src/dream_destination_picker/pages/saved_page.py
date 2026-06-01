@@ -9,6 +9,7 @@ def saved_page(previous_trip_text):
                     "Saved Trip Information",
                     size=24,
                     weight=ft.FontWeight.BOLD,
+                    font_family="Playfair",
                 ),
 
                 previous_trip_text,

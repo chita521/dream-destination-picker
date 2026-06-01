@@ -15,6 +15,7 @@ def result_page(
                     "Your Recommendation",
                     size=28,
                     weight=ft.FontWeight.BOLD,
+                    font_family="Playfair",
                 ),
 
                 destination_text,
