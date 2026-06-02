@@ -39,7 +39,7 @@ def main(page: ft.Page):
         ),
         bgcolor="red",
     )
-    page.show_dialog(page.error_snack)
+    #page.show_dialog(page.error_snack)
 
     # DROPDOWNS (INPUTS)
     budget_dropdown = ft.Dropdown(
@@ -89,8 +89,24 @@ def main(page: ft.Page):
 
     # PAGE NAVIGATION FUNCTIONS
     def show_home():
+
+        # RESET DROPDOWNS 
+        budget_dropdown.value = None
+        weather_dropdown.value = None 
+        activity_dropdown.value = None
+
         page.clean()
-        page.add(home)
+
+        page.add(
+            home_page(
+                page,
+                budget_dropdown,
+                weather_dropdown,
+                activity_dropdown,
+                generate_destination,
+            )
+        )
+        page.update()
 
     def show_result():
         page.clean()
@@ -181,10 +197,14 @@ def main(page: ft.Page):
                     ft.ElevatedButton(
                         "Try Again",
                         on_click=lambda e: show_home(),
+                        bgcolor="#0B3D91",
+                        color="white",
                     ),
                     ft.ElevatedButton(
                         "View Saved Trips",
                         on_click=lambda e: show_saved(),
+                        bgcolor="#0B3D91",
+                        color="white",
                     ),
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
@@ -200,6 +220,8 @@ def main(page: ft.Page):
             ft.ElevatedButton(
                 "Plan Another Trip",
                 on_click=lambda e: show_home(),
+                bgcolor="#0B3D91",
+                color="white",
             ),
         ],
         horizontal_alignment=ft.CrossAxisAlignment.CENTER,
