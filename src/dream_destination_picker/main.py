@@ -91,11 +91,10 @@ def main(page: ft.Page):
     def show_home():
 
         # RESET DROPDOWNS 
-        budget_dropdown.value = None
-        weather_dropdown.value = None 
-        activity_dropdown.value = None
-
         page.clean()
+        budget_dropdown.value = ""
+        weather_dropdown.value = ""
+        activity_dropdown.value = ""
 
         page.add(
             home_page(
@@ -229,6 +228,5 @@ def main(page: ft.Page):
 
     # START APP ON HOME PAGE
     show_home()
-
 
 ft.app(target=main)
