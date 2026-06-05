@@ -10,7 +10,6 @@ from pages.home_page import home_page
 from pages.result_page import result_page
 from pages.saved_page import saved_page
 
-
 def main(page: ft.Page):
 
     trip_data = None
@@ -229,4 +228,4 @@ def main(page: ft.Page):
     # START APP ON HOME PAGE
     show_home()
 
-ft.app(target=main)
+ft.app(target=main, assets_dir="assets")
