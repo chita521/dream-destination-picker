@@ -2,7 +2,7 @@ import json
 from pathlib import Path
 from data import destination_data
 
-DATA_FILE = Path("src/dream_destination_picker/data/saved_trip.json")
+DATA_FILE = Path("data/saved_trip.json")
 
 def get_recommendation(budget_choice, weather_choice, activity_choice):
 

@@ -24,8 +24,8 @@ def main(page: ft.Page):
     page.bgcolor = "#EAF6FF"
 
     page.fonts = {
-        "Antic": "/Users/akhilachitluri/Documents/GitHub/dream-destination-picker/src/dream_destination_picker/fonts/Antic-Regular.ttf",
-        "Playfair": "/Users/akhilachitluri/Documents/GitHub/dream-destination-picker/src/dream_destination_picker/fonts/PlayfairDisplay-VariableFont_wght.ttf",
+        "Antic": "fonts/Antic-Regular.ttf",
+        "Playfair": "fonts/PlayfairDisplay-VariableFont_wght.ttf",
     }
 
     page.theme = ft.Theme(font_family="Antic")
@@ -226,4 +226,4 @@ def main(page: ft.Page):
     # START APP ON HOME PAGE
     show_home()
 
-ft.app(target=main, assets_dir="assets")
+ft.app(target=main, assets_dir="resources")
