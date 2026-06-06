@@ -15,7 +15,7 @@ def home_page(
                     "🌎 Dream Destination Picker",
                     size=34,
                     weight=ft.FontWeight.BOLD,
-                    font_family="playfair",
+                    font_family="Playfair",
                     color="#0B3D91",
                 ),
 

@@ -38,7 +38,6 @@ def main(page: ft.Page):
         ),
         bgcolor="red",
     )
-    #page.show_dialog(page.error_snack)
 
     # DROPDOWNS (INPUTS)
     budget_dropdown = ft.Dropdown(
@@ -125,7 +124,6 @@ def main(page: ft.Page):
         ):
             if not page.error_snack.open:
                 page.show_dialog(page.error_snack)
-                #page.update()
             return
 
         recommendation = get_recommendation(
