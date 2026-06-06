@@ -37,14 +37,7 @@ Users select a budget, weather preference, and activity type. The application th
 
 ## How to Run
 
-1. Install project dependencies.
-2. Open the project in VS Code.
-3. Activate the Poetry environment.
-4. Run the application:
-
-```bash
-flet run
-```
+Open the project in VS Code and run `main.py`
 
 ## Author
 
